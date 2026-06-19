@@ -39,28 +39,36 @@ exports.AppModule = AppModule = __decorate([
             typeorm_1.TypeOrmModule.forRootAsync({
                 imports: [config_1.ConfigModule],
                 inject: [config_1.ConfigService],
-                useFactory: (configService) => ({
-                    type: 'postgres',
-                    host: configService.get('DB_HOST', 'localhost'),
-                    port: configService.get('DB_PORT', 5432),
-                    username: configService.get('DB_USERNAME', 'postgres'),
-                    password: configService.get('DB_PASSWORD', 'password'),
-                    database: configService.get('DB_NAME', 'portfolio_dashboard'),
-                    entities: [
-                        user_entity_1.User,
-                        category_entity_1.Category,
-                        project_entity_1.Project,
-                        message_entity_1.Message,
-                        visitor_stats_entity_1.VisitorStats,
-                        review_entity_1.Review,
-                        experience_entity_1.Experience,
-                        statistics_entity_1.Statistics,
-                        about_entity_1.About,
-                        certificate_entity_1.Certificate,
-                        todo_entity_1.Todo,
-                    ],
-                    synchronize: true,
-                }),
+                useFactory: (configService) => {
+                    const url = configService.get('DATABASE_URL');
+                    return {
+                        type: 'postgres',
+                        ...(url
+                            ? { url }
+                            : {
+                                host: configService.get('DB_HOST', 'localhost'),
+                                port: configService.get('DB_PORT', 5432),
+                                username: configService.get('DB_USERNAME', 'postgres'),
+                                password: configService.get('DB_PASSWORD', 'password'),
+                                database: configService.get('DB_NAME', 'portfolio_dashboard'),
+                            }),
+                        entities: [
+                            user_entity_1.User,
+                            category_entity_1.Category,
+                            project_entity_1.Project,
+                            message_entity_1.Message,
+                            visitor_stats_entity_1.VisitorStats,
+                            review_entity_1.Review,
+                            experience_entity_1.Experience,
+                            statistics_entity_1.Statistics,
+                            about_entity_1.About,
+                            certificate_entity_1.Certificate,
+                            todo_entity_1.Todo,
+                        ],
+                        synchronize: true,
+                        ssl: url ? { rejectUnauthorized: false } : false,
+                    };
+                },
             }),
             auth_module_1.AuthModule,
             projects_module_1.ProjectsModule,

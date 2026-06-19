@@ -140,13 +140,20 @@ async function runMigration() {
     process.exit(1);
   }
 
-  const pgClient = new Client({
-    host: DB_HOST,
-    port: DB_PORT,
-    user: DB_USERNAME,
-    password: DB_PASSWORD,
-    database: DB_NAME,
-  });
+  const databaseUrl = process.env.DATABASE_URL;
+  const clientConfig = databaseUrl
+    ? {
+        connectionString: databaseUrl,
+        ssl: { rejectUnauthorized: false },
+      }
+    : {
+        host: DB_HOST,
+        port: DB_PORT,
+        user: DB_USERNAME,
+        password: DB_PASSWORD,
+        database: DB_NAME,
+      };
+  const pgClient = new Client(clientConfig);
 
   try {
     await pgClient.connect();
