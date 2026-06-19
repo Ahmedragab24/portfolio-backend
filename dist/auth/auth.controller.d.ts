@@ -15,6 +15,20 @@ export declare class AuthController {
         email: string;
         name: string;
     } | null>;
+    updateProfile(req: any, body: any): Promise<{
+        id: string;
+        email: string;
+        name: string;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
+    adminUpdateUser(req: any, body: any, id: string): Promise<{
+        id: string;
+        email: string;
+        name: string;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
     logout(): Promise<{
         success: boolean;
     }>;

@@ -87,4 +87,23 @@ export class AuthService implements OnModuleInit {
     }
     return null;
   }
+
+  async updateUser(id: string, email?: string, password?: string, name?: string) {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+    
+    if (email) user.email = email;
+    if (name) user.name = name;
+    if (password) {
+      user.password = await bcrypt.hash(password, 10);
+    }
+    
+    await this.userRepository.save(user);
+    
+    // Exclude password from the returned object
+    const { password: _, ...result } = user;
+    return result;
+  }
 }

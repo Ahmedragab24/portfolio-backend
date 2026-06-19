@@ -19,4 +19,11 @@ export declare class AuthService implements OnModuleInit {
         };
     }>;
     validateUserById(id: string): Promise<User | null>;
+    updateUser(id: string, email?: string, password?: string, name?: string): Promise<{
+        id: string;
+        email: string;
+        name: string;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
 }

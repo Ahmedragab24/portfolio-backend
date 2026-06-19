@@ -4,7 +4,7 @@ import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('about')
 export class AboutController {
-  constructor(private readonly aboutService: AboutService) {}
+  constructor(private readonly aboutService: AboutService) { }
 
   @Get()
   async getAbout() {

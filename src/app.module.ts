@@ -32,18 +32,18 @@ import { PortfolioDataModule } from './portfolio-data/portfolio-data.module';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
-        const url = configService.get<string>('DATABASE_URL');
+        const url = process.env.DATABASE_URL;
         return {
           type: 'postgres',
           ...(url
             ? { url }
             : {
-                host: configService.get<string>('DB_HOST', 'localhost'),
-                port: configService.get<number>('DB_PORT', 5432),
-                username: configService.get<string>('DB_USERNAME', 'postgres'),
-                password: configService.get<string>('DB_PASSWORD', 'password'),
-                database: configService.get<string>('DB_NAME', 'portfolio_dashboard'),
-              }),
+              host: configService.get<string>('DB_HOST', 'localhost'),
+              port: configService.get<number>('DB_PORT', 5432),
+              username: configService.get<string>('DB_USERNAME', 'postgres'),
+              password: configService.get<string>('DB_PASSWORD', 'password'),
+              database: configService.get<string>('DB_NAME', 'portfolio_dashboard'),
+            }),
           entities: [
             User,
             Category,
@@ -70,4 +70,4 @@ import { PortfolioDataModule } from './portfolio-data/portfolio-data.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

@@ -125,6 +125,22 @@ let AuthService = class AuthService {
         }
         return null;
     }
+    async updateUser(id, email, password, name) {
+        const user = await this.userRepository.findOne({ where: { id } });
+        if (!user) {
+            throw new common_1.UnauthorizedException('User not found');
+        }
+        if (email)
+            user.email = email;
+        if (name)
+            user.name = name;
+        if (password) {
+            user.password = await bcrypt.hash(password, 10);
+        }
+        await this.userRepository.save(user);
+        const { password: _, ...result } = user;
+        return result;
+    }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([

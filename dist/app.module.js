@@ -40,7 +40,7 @@ exports.AppModule = AppModule = __decorate([
                 imports: [config_1.ConfigModule],
                 inject: [config_1.ConfigService],
                 useFactory: (configService) => {
-                    const url = configService.get('DATABASE_URL');
+                    const url = process.env.DATABASE_URL;
                     return {
                         type: 'postgres',
                         ...(url
